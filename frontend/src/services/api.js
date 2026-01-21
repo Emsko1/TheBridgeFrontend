@@ -1,7 +1,8 @@
 import axios from 'axios'
 
 // Configure the base URL for API calls
-const API_BASE_URL = import.meta.env.VITE_API_URL || ''
+// In Dev, default to '' to use Vite Proxy. In Prod, default to localhost:5086 if env var is missing.
+const API_BASE_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? '' : 'http://localhost:5086')
 
 console.log('🔗 API Base URL:', API_BASE_URL)
 

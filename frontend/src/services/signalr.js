@@ -8,7 +8,7 @@ export const initializeSignalR = async () => {
     return connection
   }
 
-  const hubUrl = import.meta.env.VITE_API_URL || ''
+  const hubUrl = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? '' : 'http://localhost:5086')
 
   connection = new signalR.HubConnectionBuilder()
     .withUrl(`${hubUrl}/hub/marketplace`)

@@ -5,7 +5,7 @@ import { listingsAPI } from '../services/api'
 import { initializeSignalR, onListingCreated, onListingUpdated, onListingDeleted, disconnectSignalR } from '../services/signalr'
 import { useAuth } from '../context/AuthContext'
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || ''
+const API_BASE_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? '' : 'http://localhost:5086')
 
 export default function Listings() {
   const [items, setItems] = useState([])
