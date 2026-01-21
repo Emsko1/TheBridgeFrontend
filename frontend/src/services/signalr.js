@@ -8,8 +8,8 @@ export const initializeSignalR = async () => {
     return connection
   }
 
-  const hubUrl = import.meta.env.VITE_API_URL || 'http://localhost:5086'
-  
+  const hubUrl = import.meta.env.VITE_API_URL || ''
+
   connection = new signalR.HubConnectionBuilder()
     .withUrl(`${hubUrl}/hub/marketplace`)
     .withAutomaticReconnect([0, 0, 0, 3000, 5000, 10000]) // Retry delays in ms

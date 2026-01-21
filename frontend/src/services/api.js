@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 // Configure the base URL for API calls
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5086'
+const API_BASE_URL = import.meta.env.VITE_API_URL || ''
 
 console.log('🔗 API Base URL:', API_BASE_URL)
 

@@ -7,9 +7,15 @@ export default defineConfig({
     port: 5173,
     proxy: {
       "/api": {
-        target: "http://localhost:5000", // <-- backend URL
+        target: "http://localhost:5086", // <-- backend URL
         changeOrigin: true,
         secure: false,
+      },
+      "/hub": {
+        target: "http://localhost:5086",
+        changeOrigin: true,
+        secure: false,
+        ws: true, // Enable WebSocket proxying
       },
     },
   },
