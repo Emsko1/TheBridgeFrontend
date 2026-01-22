@@ -6,56 +6,56 @@ export default function Home() {
   const isLoggedIn = !!localStorage.getItem('bridge_token')
 
   return (
-    <div className="container" style={{ paddingTop: '60px', paddingBottom: '60px' }}>
-      <div className="grid grid-cols-2" style={{ alignItems: 'center', gap: '60px' }}>
+    <div className="container" style={{ paddingTop: '40px', paddingBottom: '40px' }}>
+      <div className="grid grid-cols-2" style={{ alignItems: 'center', gap: '40px' }}>
         <div>
-          <h1 style={{ fontSize: '3.5rem', marginBottom: '24px', lineHeight: 1.1 }}>
+          <h1 style={{ fontSize: 'clamp(28px, 5vw, 3.5rem)', marginBottom: '24px', lineHeight: 1.1 }}>
             Secure Bridge for <br />
             <span style={{ color: 'var(--primary)' }}>Premium Cars.</span>
           </h1>
-          <p style={{ fontSize: '1.2rem', marginBottom: '32px', maxWidth: '480px' }}>
+          <p style={{ fontSize: 'clamp(14px, 4vw, 1.2rem)', marginBottom: '32px', maxWidth: '480px' }}>
             Buy and sell foreign used and Nigerian used cars with complete peace of mind. Our escrow service ensures you never lose a dime.
           </p>
 
-          <div style={{ display: 'flex', gap: '16px' }}>
+          <div style={{ display: 'flex', gap: '12px', flexDirection: 'row', flexWrap: 'wrap' }}>
             {isLoggedIn ? (
               <>
-                <Link className="btn" to="/listings" style={{ padding: '16px 32px', fontSize: '1.1rem' }}>
+                <Link className="btn" to="/listings" style={{ padding: '12px 24px', fontSize: 'clamp(14px, 3vw, 1.1rem)', flex: 'auto', minWidth: '150px' }}>
                   Browse Cars
                 </Link>
-                <Link className="btn-outline" to="/sell" style={{ padding: '16px 32px', fontSize: '1.1rem' }}>
+                <Link className="btn-outline" to="/sell" style={{ padding: '12px 24px', fontSize: 'clamp(14px, 3vw, 1.1rem)', flex: 'auto', minWidth: '150px' }}>
                   Sell a Car
                 </Link>
               </>
             ) : (
               <>
-                <Link className="btn" to="/register" style={{ padding: '16px 32px', fontSize: '1.1rem' }}>
+                <Link className="btn" to="/register" style={{ padding: '12px 24px', fontSize: 'clamp(14px, 3vw, 1.1rem)', flex: 'auto', minWidth: '150px' }}>
                   Start Trading
                 </Link>
-                <Link className="btn-ghost" to="/login" style={{ padding: '16px 32px', fontSize: '1.1rem' }}>
+                <Link className="btn-ghost" to="/login" style={{ padding: '12px 24px', fontSize: 'clamp(14px, 3vw, 1.1rem)', flex: 'auto', minWidth: '150px' }}>
                   Login
                 </Link>
               </>
             )}
           </div>
 
-          <div style={{ marginTop: '40px', display: 'flex', gap: '40px', color: 'var(--text-muted)' }}>
+          <div style={{ marginTop: '40px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))', gap: '24px', color: 'var(--text-muted)' }}>
             <div>
-              <div style={{ fontWeight: 800, fontSize: '24px', color: 'var(--text-main)' }}>500+</div>
-              <div>Verified Cars</div>
+              <div style={{ fontWeight: 800, fontSize: 'clamp(18px, 4vw, 24px)', color: 'var(--text-main)' }}>500+</div>
+              <div style={{ fontSize: '14px' }}>Verified Cars</div>
             </div>
             <div>
-              <div style={{ fontWeight: 800, fontSize: '24px', color: 'var(--text-main)' }}>₦2B+</div>
-              <div>Traded Volume</div>
+              <div style={{ fontWeight: 800, fontSize: 'clamp(18px, 4vw, 24px)', color: 'var(--text-main)' }}>₦2B+</div>
+              <div style={{ fontSize: '14px' }}>Traded Volume</div>
             </div>
             <div>
-              <div style={{ fontWeight: 800, fontSize: '24px', color: 'var(--text-main)' }}>100%</div>
-              <div>Secure Escrow</div>
+              <div style={{ fontWeight: 800, fontSize: 'clamp(18px, 4vw, 24px)', color: 'var(--text-main)' }}>100%</div>
+              <div style={{ fontSize: '14px' }}>Secure Escrow</div>
             </div>
           </div>
         </div>
 
-        <div style={{ position: 'relative' }}>
+        <div style={{ position: 'relative', minHeight: '300px' }}>
           <div style={{
             position: 'absolute',
             top: '-20px',
@@ -72,7 +72,8 @@ export default function Home() {
             style={{
               width: '100%',
               borderRadius: '24px',
-              boxShadow: 'var(--shadow-lg)'
+              boxShadow: 'var(--shadow-lg)',
+              objectFit: 'cover'
             }}
           />
         </div>
@@ -97,14 +98,20 @@ export default function Home() {
           zIndex: 100,
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'center',
-          border: '1px solid #B2DFDB'
+          justifyContent: 'center'
         }}
       >
-        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#00D09C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-        </svg>
+        💬
       </a>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .grid-cols-2 {
+            grid-template-columns: 1fr;
+            gap: 24px;
+          }
+        }
+      `}</style>
     </div>
   )
 }

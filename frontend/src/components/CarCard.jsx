@@ -46,61 +46,71 @@ export default function CarCard({ car }) {
           <>
             <button
               onClick={handlePrevPhoto}
+              aria-label="Previous photo"
               style={{
                 position: 'absolute',
-                left: 10,
+                left: '8px',
                 top: '50%',
                 transform: 'translateY(-50%)',
                 background: 'rgba(255,255,255,0.9)',
                 color: 'var(--text-main)',
                 border: 'none',
-                width: 32,
-                height: 32,
+                width: '32px',
+                height: '32px',
                 borderRadius: '50%',
                 cursor: 'pointer',
-                fontSize: 14,
+                fontSize: '14px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                transition: 'all 0.2s',
+                zIndex: 10
               }}
+              onMouseOver={e => e.target.style.background = 'rgba(255,255,255,1)'}
+              onMouseOut={e => e.target.style.background = 'rgba(255,255,255,0.9)'}
             >
               ◄
             </button>
 
             <button
               onClick={handleNextPhoto}
+              aria-label="Next photo"
               style={{
                 position: 'absolute',
-                right: 10,
+                right: '8px',
                 top: '50%',
                 transform: 'translateY(-50%)',
                 background: 'rgba(255,255,255,0.9)',
                 color: 'var(--text-main)',
                 border: 'none',
-                width: 32,
-                height: 32,
+                width: '32px',
+                height: '32px',
                 borderRadius: '50%',
                 cursor: 'pointer',
-                fontSize: 14,
+                fontSize: '14px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                transition: 'all 0.2s',
+                zIndex: 10
               }}
+              onMouseOver={e => e.target.style.background = 'rgba(255,255,255,1)'}
+              onMouseOut={e => e.target.style.background = 'rgba(255,255,255,0.9)'}
             >
               ►
             </button>
 
             <div style={{
               position: 'absolute',
-              bottom: 10,
-              right: 10,
+              bottom: '10px',
+              right: '10px',
               background: 'rgba(0,0,0,0.6)',
               color: 'white',
               padding: '4px 8px',
-              borderRadius: 12,
-              fontSize: 11,
+              borderRadius: '12px',
+              fontSize: '11px',
               backdropFilter: 'blur(4px)',
               fontWeight: 600
             }}>
@@ -110,25 +120,25 @@ export default function CarCard({ car }) {
         )}
       </div>
 
-      <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', flex: 1 }}>
-        <h3 style={{ fontSize: '14px', marginBottom: '8px', lineHeight: 1.4, height: '50px', overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', fontWeight: 600 }}>{car.title}</h3>
+      <div style={{ padding: 'clamp(12px, 3vw, 20px)', display: 'flex', flexDirection: 'column', flex: 1 }}>
+        <h3 style={{ fontSize: 'clamp(13px, 2.5vw, 14px)', marginBottom: '8px', lineHeight: 1.4, height: 'auto', overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', fontWeight: 600 }}>{car.title}</h3>
 
-        <p style={{ color: 'var(--text-muted)', fontSize: '12px', marginBottom: '16px' }}>
+        <p style={{ color: 'var(--text-muted)', fontSize: 'clamp(11px, 2vw, 12px)', marginBottom: '12px' }}>
           {car.location} • {car.year || 'N/A'}
         </p>
 
-        <div style={{ marginTop: 'auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ marginTop: 'auto', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: '12px', flexWrap: 'wrap' }}>
           <div>
-            <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: 2 }}>Price</div>
-            <div style={{ fontWeight: 800, fontSize: '18px', color: 'var(--primary)' }}>
+            <div style={{ fontSize: 'clamp(10px, 1.5vw, 12px)', color: 'var(--text-muted)', marginBottom: '2px' }}>Price</div>
+            <div style={{ fontWeight: 800, fontSize: 'clamp(16px, 3vw, 18px)', color: 'var(--primary)' }}>
               ₦{typeof car.price === 'number' ? car.price.toLocaleString() : car.price}
             </div>
           </div>
-          <Link to={`/listing/${car.id}`} className="btn-outline" style={{ padding: '8px 20px', fontSize: '14px', borderRadius: '8px' }}>
+          <Link to={`/listing/${car.id}`} className="btn-outline" style={{ padding: '8px 16px', fontSize: 'clamp(12px, 2vw, 14px)', borderRadius: '8px', flex: 'auto', minWidth: '80px', textAlign: 'center' }}>
             View
           </Link>
         </div>
       </div>
-    </div >
+    </div>
   )
 }

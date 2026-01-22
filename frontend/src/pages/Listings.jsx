@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios'
 import CarCard from '../components/CarCard'
 import { listingsAPI } from '../services/api'
 import { initializeSignalR, onListingCreated, onListingUpdated, onListingDeleted, disconnectSignalR } from '../services/signalr'
 import { useAuth } from '../context/AuthContext'
-
-const API_BASE_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? '' : 'http://localhost:5086')
 
 export default function Listings() {
   const [items, setItems] = useState([])
@@ -42,19 +39,19 @@ export default function Listings() {
         // Call appropriate API based on filter
         if (filterType === 'marketplace') {
           // Get combined marketplace listings (local + external)
-          const localRes = await axios.get(`${API_BASE_URL}/api/listings`)
-          const externalRes = await axios.get(`${API_BASE_URL}/api/listings/external`)
+          const localRes = await listingsAPI.getAll()
+          const externalRes = await listingsAPI.getExternal()
           response = {
             data: [...(localRes.data || []), ...(externalRes.data || [])]
           }
           console.log('📊 Marketplace listings:', response.data.length)
         } else if (filterType === 'external') {
           // Get premium/external listings
-          response = await axios.get(`${API_BASE_URL}/api/listings/external`)
+          response = await listingsAPI.getExternal()
           console.log('⭐ Premium listings:', response.data?.length)
         } else if (filterType === 'local') {
           // Get user's local listings
-          response = await axios.get(`${API_BASE_URL}/api/listings`)
+          response = await listingsAPI.getAll()
           console.log('🏠 Local listings:', response.data?.length)
         }
 
@@ -130,17 +127,21 @@ export default function Listings() {
 
       {error && <p style={{ color: 'orange', padding: '10px', background: '#fff3cd', borderRadius: '4px' }}>⚠️ {error}</p>}
 
-      <div style={{ marginBottom: 20, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+      <div style={{ marginBottom: '20px', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
         <button
           onClick={() => setFilterType('marketplace')}
           style={{
-            padding: '8px 16px',
+            padding: '8px 12px',
             background: filterType === 'marketplace' ? '#0ea5a4' : '#ddd',
             color: filterType === 'marketplace' ? 'white' : 'black',
             border: 'none',
-            borderRadius: 4,
+            borderRadius: '4px',
             cursor: 'pointer',
-            fontWeight: filterType === 'marketplace' ? 'bold' : 'normal'
+            fontWeight: filterType === 'marketplace' ? 'bold' : 'normal',
+            fontSize: 'clamp(12px, 2vw, 14px)',
+            flex: '1 1 auto',
+            minWidth: '100px',
+            transition: 'all 0.2s'
           }}
         >
           🏬 All Listings
@@ -148,13 +149,17 @@ export default function Listings() {
         <button
           onClick={() => setFilterType('local')}
           style={{
-            padding: '8px 16px',
+            padding: '8px 12px',
             background: filterType === 'local' ? '#0ea5a4' : '#ddd',
             color: filterType === 'local' ? 'white' : 'black',
             border: 'none',
-            borderRadius: 4,
+            borderRadius: '4px',
             cursor: 'pointer',
-            fontWeight: filterType === 'local' ? 'bold' : 'normal'
+            fontWeight: filterType === 'local' ? 'bold' : 'normal',
+            fontSize: 'clamp(12px, 2vw, 14px)',
+            flex: '1 1 auto',
+            minWidth: '100px',
+            transition: 'all 0.2s'
           }}
         >
           🏠 My Listings
@@ -162,13 +167,17 @@ export default function Listings() {
         <button
           onClick={() => setFilterType('external')}
           style={{
-            padding: '8px 16px',
+            padding: '8px 12px',
             background: filterType === 'external' ? '#0ea5a4' : '#ddd',
             color: filterType === 'external' ? 'white' : 'black',
             border: 'none',
-            borderRadius: 4,
+            borderRadius: '4px',
             cursor: 'pointer',
-            fontWeight: filterType === 'external' ? 'bold' : 'normal'
+            fontWeight: filterType === 'external' ? 'bold' : 'normal',
+            fontSize: 'clamp(12px, 2vw, 14px)',
+            flex: '1 1 auto',
+            minWidth: '100px',
+            transition: 'all 0.2s'
           }}
         >
           ⭐ Premium Listings
@@ -184,6 +193,14 @@ export default function Listings() {
           ))
         )}
       </div>
+
+      <style>{`
+        @media (max-width: 640px) {
+          .grid {
+            grid-template-columns: 1fr;
+          }
+        }
+      `}</style>
     </div>
   )
 }
