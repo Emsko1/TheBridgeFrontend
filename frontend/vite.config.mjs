@@ -7,14 +7,14 @@ export default defineConfig({
     port: 5173,
     proxy: {
       "/api": {
-        target: "http://localhost:5086", // <-- backend URL
+        target: process.env.VITE_API_URL || "http://localhost:5086",
         changeOrigin: true,
-        secure: false,
+        secure: true,
       },
       "/hub": {
-        target: "http://localhost:5086",
+        target: process.env.VITE_API_URL || "http://localhost:5086",
         changeOrigin: true,
-        secure: false,
+        secure: true,
         ws: true, // Enable WebSocket proxying
       },
     },
