@@ -66,7 +66,7 @@ export default function Register() {
 
       let message = 'Registration failed'
       if (err.response?.status === 0 || err.message === 'Network Error') {
-        message = '🔌 Network error: Cannot connect to backend. Ensure backend is running on http://localhost:5086'
+        message = '🔌 Network error: Cannot connect to backend. Make sure the backend is running.'
       } else if (err.response?.data?.message) {
         message = err.response.data.message
       } else if (err.response?.data?.error) {
