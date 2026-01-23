@@ -42,37 +42,35 @@ export default function Register() {
         documentUrls: documentUrl ? [documentUrl] : []
       }
 
-      // We need to update the API service to accept an object or update the call here
-      // Assuming authAPI.register needs update or we use axios directly. 
-      // Let's assume we update authAPI.register to take an object or extra args.
-      // For now, let's assume we can pass the payload if we modify the service later.
-      // But wait, I can't modify the service file right now as I haven't read it.
-      // I should check the service file first.
-
-      // Actually, let's just use the payload in the updated service call.
+      console.log('📤 Sending registration payload:', payload)
       const response = await authAPI.register(payload)
       console.log('✅ Registration successful:', response.data)
-      alert('✅ Registration successful! Please login.')
-      navigate('/login')
+      alert('✅ Registration successful! Please check your email for the verification code.')
+      navigate('/verify-email', { state: { email } })
     } catch (err) {
       console.error('❌ Register error:', err)
-      console.error('Error details:', {
-        status: err.response?.status,
-        data: err.response?.data,
-        message: err.message,
+      console.error('Error response:', err.response?.data)
+      console.error('Error message:', err.message)
+      console.error('Error config:', {
         url: err.config?.url,
-        baseURL: err.config?.baseURL
+        baseURL: err.config?.baseURL,
+        method: err.config?.method
       })
 
       let message = 'Registration failed'
-      if (err.response?.status === 0 || err.message === 'Network Error') {
-        message = '🔌 Network error: Cannot connect to backend. Make sure the backend is running.'
+      if (err.code === 'ERR_NETWORK' || !err.response) {
+        const apiUrl = import.meta.env.VITE_API_URL || '/api'
+        message = `🔌 Cannot reach backend at ${apiUrl}`
+      } else if (err.response?.status === 409) {
+        message = '📧 Email already registered. Please login or use a different email.'
+      } else if (err.response?.status === 400) {
+        message = err.response?.data?.message || 'Invalid input. Please check your details.'
       } else if (err.response?.data?.message) {
         message = err.response.data.message
       } else if (err.response?.data?.error) {
         message = err.response.data.error
-      } else if (err.response?.data) {
-        message = typeof err.response.data === 'string' ? err.response.data : JSON.stringify(err.response.data)
+      } else if (typeof err.response?.data === 'string') {
+        message = err.response.data
       } else if (err.message) {
         message = err.message
       }
@@ -168,5 +166,3 @@ export default function Register() {
     </div>
   )
 }
-
-

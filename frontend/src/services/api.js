@@ -1,10 +1,11 @@
 import axios from 'axios'
 
 // Configure the base URL for API calls
-// In Dev, default to '' to use Vite Proxy. In Prod, default to localhost:5086 if env var is missing.
-const API_BASE_URL = 'https://thebridgebackend.onrender.com'
+// Priority: VITE_API_URL env var > localhost:5086 (fallback)
+const API_BASE_URL = import.meta.env.VITE_API_URL || ''
 
 console.log('🔗 API Base URL:', API_BASE_URL)
+console.log('🌍 Environment:', import.meta.env.DEV ? 'Development' : 'Production')
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -59,7 +60,9 @@ export const authAPI = {
     return api.post('/api/auth/register', { Name: nameOrPayload, Email: email, PasswordHash: password })
   },
   getProfile: () => api.get('/api/auth/me'),
-  logout: () => api.post('/api/auth/logout')
+  logout: () => api.post('/api/auth/logout'),
+  verifyEmail: (email, code) => api.post('/api/auth/verify-email', { email, code }),
+  resendVerification: (email) => api.post('/api/auth/resend-verification', { email })
 }
 
 // Payout API
@@ -82,5 +85,3 @@ export const paystackAPI = {
 }
 
 export default api
-
-

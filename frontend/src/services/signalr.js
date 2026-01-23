@@ -8,7 +8,7 @@ export const initializeSignalR = async () => {
     return connection
   }
 
-  const hubUrl = 'https://thebridgebackend.onrender.com'
+  const hubUrl = import.meta.env.VITE_API_URL || ''
 
   connection = new signalR.HubConnectionBuilder()
     .withUrl(`${hubUrl}/hub/marketplace`)
