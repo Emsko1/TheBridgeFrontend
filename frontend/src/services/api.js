@@ -10,7 +10,8 @@ console.log('🌍 Environment:', import.meta.env.DEV ? 'Development' : 'Producti
 const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    'ngrok-skip-browser-warning': 'true' // Bypass Ngrok warning page
   },
   withCredentials: true // Enable credentials for CORS
 })
