@@ -1,8 +1,8 @@
 import axios from 'axios'
 
 // Configure the base URL for API calls
-// Priority: VITE_API_URL > (Dev ? Localhost : Ngrok)
-const API_BASE_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? '' : 'https://mica-multifocal-marcell.ngrok-free.dev')
+// Priority: VITE_API_URL > Ngrok Tunnel (Always for now)
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://mica-multifocal-marcell.ngrok-free.dev'
 
 console.log('🔗 API Base URL:', API_BASE_URL)
 console.log('🌍 Environment:', import.meta.env.DEV ? 'Development' : 'Production')
