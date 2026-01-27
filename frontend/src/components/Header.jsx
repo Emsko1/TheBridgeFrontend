@@ -116,6 +116,9 @@ export default function Header() {
           <Link to="/sell" onClick={() => setMenuOpen(false)} style={{ color: 'white', textDecoration: 'none', fontSize: '14px', fontWeight: '500' }}>
             Sell
           </Link>
+          <Link to="/flash-sale" onClick={() => setMenuOpen(false)} style={{ color: '#EF4444', textDecoration: 'none', fontSize: '14px', fontWeight: 'bold' }}>
+            LIVE AUCTIONS
+          </Link>
           {isAuthenticated ? (
             <>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
