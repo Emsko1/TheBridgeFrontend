@@ -26,6 +26,9 @@ export default function Header() {
           <Link to="/listings" style={{ color: 'white', textDecoration: 'none', fontSize: '14px', fontWeight: '500', transition: 'color 0.3s' }}>
             Browse
           </Link>
+          <Link to="/listings?type=auction" style={{ color: '#ff4444', textDecoration: 'none', fontSize: '14px', fontWeight: 'bold', transition: 'color 0.3s' }}>
+            Live Auctions 🔴
+          </Link>
           <Link to="/sell" style={{ color: 'white', textDecoration: 'none', fontSize: '14px', fontWeight: '500', transition: 'color 0.3s' }}>
             Sell
           </Link>
@@ -95,6 +98,9 @@ export default function Header() {
           <Link to="/listings" onClick={() => setMenuOpen(false)} style={{ color: 'white', textDecoration: 'none', fontSize: '14px', fontWeight: '500' }}>
             Browse
           </Link>
+          <Link to="/listings?type=auction" onClick={() => setMenuOpen(false)} style={{ color: '#ff4444', textDecoration: 'none', fontSize: '14px', fontWeight: 'bold' }}>
+            Live Auctions 🔴
+          </Link>
           <Link to="/sell" onClick={() => setMenuOpen(false)} style={{ color: 'white', textDecoration: 'none', fontSize: '14px', fontWeight: '500' }}>
             Sell
           </Link>
@@ -128,6 +134,9 @@ export default function Header() {
               </Link>
               <Link to="/register" onClick={() => setMenuOpen(false)} style={{ color: '#d4af37', textDecoration: 'none', fontSize: '14px', fontWeight: 'bold' }}>
                 Register
+              </Link>
+              <Link to="/listings?type=auction" onClick={() => setMenuOpen(false)} style={{ color: '#ff4444', textDecoration: 'none', fontSize: '14px', fontWeight: 'bold' }}>
+                Live Auctions 🔴
               </Link>
             </>
           )}

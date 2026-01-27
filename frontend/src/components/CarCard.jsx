@@ -118,6 +118,24 @@ export default function CarCard({ car }) {
             </div>
           </>
         )}
+
+        {car.isTender && (
+          <div style={{
+            position: 'absolute',
+            top: '10px',
+            right: '10px',
+            background: '#ff4444',
+            color: 'white',
+            padding: '4px 8px',
+            borderRadius: '4px',
+            fontSize: '12px',
+            fontWeight: 'bold',
+            boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
+            zIndex: 10
+          }}>
+            🔴 Live Auction
+          </div>
+        )}
       </div>
 
       <div style={{ padding: 'clamp(12px, 3vw, 20px)', display: 'flex', flexDirection: 'column', flex: 1 }}>

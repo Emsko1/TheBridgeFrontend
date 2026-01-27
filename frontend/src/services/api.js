@@ -2,7 +2,8 @@ import axios from 'axios'
 
 // Configure the base URL for API calls
 // In Dev, default to '' to use Vite Proxy. In Prod, default to localhost:5086 if env var is missing.
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://thebridgebackend.onrender.com'
+// Hardcoded for debugging to ensure we hit local backend
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5086'
 
 console.log('🔗 API Base URL:', API_BASE_URL)
 
@@ -48,7 +49,7 @@ export const listingsAPI = {
 export const authAPI = {
   login: (email, password) => {
     console.log('🔐 Login attempt:', email)
-    return api.post('/api/auth/login', { Email: email, PasswordHash: password })
+    return api.post('/api/auth/login', { email, password })
   },
   register: (nameOrPayload, email, password) => {
     if (typeof nameOrPayload === 'object') {
@@ -56,7 +57,11 @@ export const authAPI = {
       return api.post('/api/auth/register', nameOrPayload)
     }
     console.log('📝 Register attempt:', { name: nameOrPayload, email })
-    return api.post('/api/auth/register', { Name: nameOrPayload, Email: email, PasswordHash: password })
+    return api.post('/api/auth/register', { name: nameOrPayload, email, password })
+  },
+  verifyEmail: (email, otp) => {
+    console.log('🔐 Email verification attempt:', email)
+    return api.post('/api/auth/verify-email', { email, otp })
   },
   getProfile: () => api.get('/api/auth/me'),
   logout: () => api.post('/api/auth/logout')
@@ -79,6 +84,13 @@ export const bidsAPI = {
 export const paystackAPI = {
   initializeTransaction: (reference, amount) => api.post('/api/paystack/initialize', { reference, amount }),
   verifyTransaction: (reference) => api.post('/api/paystack/verify', { reference })
+}
+
+// Deliveries API
+export const deliveriesAPI = {
+  getMyDeliveries: () => api.get('/api/deliveries/my-deliveries'),
+  create: (delivery) => api.post('/api/deliveries', delivery),
+  updateStatus: (id, status) => api.put(`/api/deliveries/${id}/status`, `"${status}"`, { headers: { 'Content-Type': 'application/json' } })
 }
 
 export default api

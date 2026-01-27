@@ -100,6 +100,35 @@ export const notifyListingDeleted = async (listingId) => {
   }
 }
 
+// Presence Events
+export const onUserStatusChanged = (callback) => {
+  if (!connection) return
+  connection.on('UserStatusChanged', (userId, isOnline) => {
+    callback(userId, isOnline)
+  })
+}
+
+export const onUserConnected = (callback) => {
+  if (!connection) return
+  connection.on('UserConnected', (connectionId) => {
+    callback(connectionId)
+  })
+}
+
+export const onUserDisconnected = (callback) => {
+  if (!connection) return
+  connection.on('UserDisconnected', (connectionId) => {
+    callback(connectionId)
+  })
+}
+
+export const onBidPlaced = (callback) => {
+  if (!connection) return
+  connection.on('BidPlaced', (bid) => {
+    callback(bid)
+  })
+}
+
 // Disconnect
 export const disconnectSignalR = async () => {
   if (connection) {

@@ -21,8 +21,8 @@ export default function Register() {
       return
     }
 
-    if (password.length < 6) {
-      setError('Password must be at least 6 characters')
+    if (password.length < 8) {
+      setError('Password must be at least 8 characters')
       setLoading(false)
       return
     }
@@ -36,22 +36,15 @@ export default function Register() {
       const payload = {
         name,
         email,
-        passwordHash: password,
+        password,
         businessName,
         registrationNumber,
         documentUrls: documentUrl ? [documentUrl] : []
       }
 
-      // We need to update the API service to accept an object or update the call here
-      // Assuming authAPI.register needs update or we use axios directly. 
-      // Let's assume we update authAPI.register to take an object or extra args.
-      // For now, let's assume we can pass the payload if we modify the service later.
-      // But wait, I can't modify the service file right now as I haven't read it.
-      // I should check the service file first.
-
-      // Actually, let's just use the payload in the updated service call.
       const response = await authAPI.register(payload)
       console.log('✅ Registration successful:', response.data)
+
       alert('✅ Registration successful! Please login.')
       navigate('/login')
     } catch (err) {

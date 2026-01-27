@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import CarCard from '../components/CarCard'
 import { listingsAPI } from '../services/api'
 import { initializeSignalR, onListingCreated, onListingUpdated, onListingDeleted, disconnectSignalR } from '../services/signalr'
@@ -9,7 +10,8 @@ export default function Listings() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [connected, setConnected] = useState(false)
-  const [filterType, setFilterType] = useState('marketplace') // 'marketplace', 'local', 'external'
+  const [searchParams] = useSearchParams()
+  const [filterType, setFilterType] = useState(searchParams.get('type') === 'auction' ? 'auction' : 'marketplace') // 'marketplace', 'local', 'external', 'auction'
   const { user } = useAuth()
 
   useEffect(() => {
@@ -53,6 +55,15 @@ export default function Listings() {
           // Get user's local listings
           response = await listingsAPI.getAll()
           console.log('🏠 Local listings:', response.data?.length)
+        } else if (filterType === 'auction') {
+          // Get all and filter for tenders/auctions
+          const localRes = await listingsAPI.getAll()
+          const externalRes = await listingsAPI.getExternal()
+          const allListings = [...(localRes.data || []), ...(externalRes.data || [])]
+          response = {
+            data: allListings.filter(item => item.IsTender || item.isTender)
+          }
+          console.log('🔴 Auction listings:', response.data.length)
         }
 
         // Normalize the data - ensure images are properly mapped
@@ -70,7 +81,10 @@ export default function Listings() {
           imageUrl: ((item.photos || item.Photos)?.[0]) ||
             (item.photo) ||
             'https://images.unsplash.com/photo-1552519507-da3a142c6e3d?w=800&h=600&fit=crop',
-          Photo: ((item.photos || item.Photos)?.[0]) || 'https://images.unsplash.com/photo-1552519507-da3a142c6e3d?w=800&h=600&fit=crop'
+          Photo: ((item.photos || item.Photos)?.[0]) || 'https://images.unsplash.com/photo-1552519507-da3a142c6e3d?w=800&h=600&fit=crop',
+          isTender: item.IsTender || item.isTender,
+          saleEndTime: item.SaleEndTime || item.saleEndTime,
+          minimumBid: item.MinimumBid || item.minimumBid
         }))
 
         // Filter local listings by user ID if filterType is 'local'
@@ -145,6 +159,24 @@ export default function Listings() {
           }}
         >
           🏬 All Listings
+        </button>
+        <button
+          onClick={() => setFilterType('auction')}
+          style={{
+            padding: '8px 12px',
+            background: filterType === 'auction' ? '#ff4444' : '#ddd',
+            color: filterType === 'auction' ? 'white' : 'black',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            fontWeight: filterType === 'auction' ? 'bold' : 'normal',
+            fontSize: 'clamp(12px, 2vw, 14px)',
+            flex: '1 1 auto',
+            minWidth: '100px',
+            transition: 'all 0.2s'
+          }}
+        >
+          🔴 Live Auctions
         </button>
         <button
           onClick={() => setFilterType('local')}

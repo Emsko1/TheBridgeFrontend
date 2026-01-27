@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { authAPI } from '../services/api'
+import { authAPI, deliveriesAPI } from '../services/api'
 import { useNavigate } from 'react-router-dom'
 
 export default function Profile() {
     const [user, setUser] = useState(null)
+    const [deliveries, setDeliveries] = useState([])
     const [loading, setLoading] = useState(true)
     const navigate = useNavigate()
 
@@ -12,6 +13,13 @@ export default function Profile() {
             try {
                 const response = await authAPI.getProfile()
                 setUser(response.data)
+
+                try {
+                    const delRes = await deliveriesAPI.getMyDeliveries()
+                    setDeliveries(delRes.data)
+                } catch (e) {
+                    console.log('Failed to fetch deliveries', e)
+                }
             } catch (err) {
                 console.error('Failed to fetch profile:', err)
                 navigate('/login')
@@ -82,6 +90,26 @@ export default function Profile() {
                                 <strong>Business Name:</strong> {user.businessName}
                             </div>
                         )}
+
+                        <div style={{ padding: 16, background: '#f9f9f9', borderRadius: 8 }}>
+                            <h3 style={{ marginTop: 0, fontSize: 16 }}>📦 My Deliveries & Logistics</h3>
+                            {deliveries.length === 0 ? (
+                                <p style={{ color: '#666' }}>No active deliveries.</p>
+                            ) : (
+                                <div style={{ display: 'grid', gap: 10 }}>
+                                    {deliveries.map(d => (
+                                        <div key={d.id} style={{ background: 'white', padding: 10, borderRadius: 4, border: '1px solid #eee' }}>
+                                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                                <strong>{d.status}</strong>
+                                                <span style={{ fontSize: 12, color: '#888' }}>{new Date(d.createdAt).toLocaleDateString()}</span>
+                                            </div>
+                                            <div style={{ fontSize: 14 }}>From: {d.pickupAddress}</div>
+                                            <div style={{ fontSize: 14 }}>To: {d.deliveryAddress}</div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
                         {user.registrationNumber && (
                             <div>
                                 <strong>Reg Number:</strong> {user.registrationNumber}
