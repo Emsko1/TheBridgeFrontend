@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { getThumbnail } from '../services/photoUtils'
+import { formatPriceReadable } from '../utils/formatUtils'
 
 export default function CarCard({ car }) {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0)
@@ -131,7 +132,7 @@ export default function CarCard({ car }) {
           <div>
             <div style={{ fontSize: 'clamp(10px, 1.5vw, 12px)', color: 'var(--text-muted)', marginBottom: '2px' }}>Price</div>
             <div style={{ fontWeight: 800, fontSize: 'clamp(16px, 3vw, 18px)', color: 'var(--primary)' }}>
-              ₦{typeof car.price === 'number' ? car.price.toLocaleString() : car.price}
+              {typeof car.price === 'number' ? formatPriceReadable(car.price) : car.price}
             </div>
           </div>
           <Link to={`/listing/${car.id}`} className="btn-outline" style={{ padding: '8px 16px', fontSize: 'clamp(12px, 2vw, 14px)', borderRadius: '8px', flex: 'auto', minWidth: '80px', textAlign: 'center' }}>

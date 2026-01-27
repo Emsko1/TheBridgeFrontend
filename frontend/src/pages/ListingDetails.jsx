@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import mock from '../_mock/listings'
 import { listingsAPI } from '../services/api'
 import DeliveryCalculator from '../components/DeliveryCalculator'
+import { formatPriceReadable } from '../utils/formatUtils'
 
 export default function ListingDetails() {
   const { id } = useParams()
@@ -168,7 +169,7 @@ export default function ListingDetails() {
         <div style={{ padding: '0 0 16px', borderBottom: '1px solid var(--border)', marginBottom: '16px' }}>
           <span style={{ fontSize: '14px', color: 'var(--text-muted)', display: 'block' }}>Asking Price</span>
           <div style={{ fontWeight: 800, fontSize: '32px', color: 'var(--primary)' }}>
-            ₦{((car.price || car.Price) || 0).toLocaleString()}
+            {formatPriceReadable((car.price || car.Price) || 0)}
           </div>
         </div>
 
@@ -176,7 +177,7 @@ export default function ListingDetails() {
         <div style={{ marginBottom: '24px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
             <span style={{ color: 'var(--text-muted)' }}>Best Offer / Bid</span>
-            <span style={{ fontWeight: 'bold' }}>₦{((car.HighestBid || (car.price * 0.9)) || 0).toLocaleString()}</span>
+            <span style={{ fontWeight: 'bold' }}>{formatPriceReadable((car.HighestBid || (car.price * 0.9)) || 0)}</span>
           </div>
           <div style={{ width: '100%', height: '8px', background: '#F1F5F9', borderRadius: '4px', overflow: 'hidden' }}>
             <div style={{ width: '90%', height: '100%', background: 'var(--accent)', borderRadius: '4px' }}></div>
