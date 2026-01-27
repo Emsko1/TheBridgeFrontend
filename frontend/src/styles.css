@@ -2,15 +2,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
 
 :root {
-  /* Brand Colors */
-  --primary: #0066F5;
-  /* Cowrywise Blue */
-  --primary-dark: #0052C8;
-  /* Darker Blue for Hover */
-  --primary-light: #E0E9FA;
-  /* Light Blue Tint */
-  --accent: #00D09C;
-  /* Success Mint */
+  /* Brand Colors - Professional Palette */
+  --primary: #0F172A; /* Deep Navy Blue */
+  --primary-dark: #020617; /* Darker Navy */
+  --primary-light: #1E293B; /* Lighter Navy */
+
+  --accent: #D4AF37; /* Gold for Luxury/Premium feel */
+  --accent-hover: #B5952F;
+
+  --success: #10B981; /* Emerald Green */
+  --danger: #EF4444; /* Red */
+  --warning: #F59E0B; /* Amber */
+  --offline: #94A3B8; /* Slate Grey for offline */
 
   /* Neutral Colors */
   --bg-body: #F4F7FA;

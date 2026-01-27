@@ -49,7 +49,7 @@ export const listingsAPI = {
 export const authAPI = {
   login: (email, password) => {
     console.log('🔐 Login attempt:', email)
-    return api.post('/api/auth/login', { Email: email, PasswordHash: password })
+    return api.post('/api/auth/login', { email, password })
   },
   register: (nameOrPayload, email, password) => {
     if (typeof nameOrPayload === 'object') {
