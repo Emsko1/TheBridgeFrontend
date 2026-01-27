@@ -1,8 +1,8 @@
 import axios from 'axios'
 
 // Configure the base URL for API calls
-// Priority: VITE_API_URL env var > localhost:5086 (fallback)
-const API_BASE_URL = import.meta.env.VITE_API_URL || ''
+// Priority: VITE_API_URL env var > Render Backend (Production Fallback) > '' (Localhost Proxy)
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://thebridgebackend.onrender.com'
 
 console.log('🔗 API Base URL:', API_BASE_URL)
 console.log('🌍 Environment:', import.meta.env.DEV ? 'Development' : 'Production')
