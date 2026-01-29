@@ -28,11 +28,18 @@ export default function VerifyEmail() {
         setLoading(true)
         try {
             await authAPI.verifyEmail(email, code)
-            toast.success('Email verified successfully! You can now login.')
-            navigate('/login')
+            toast.success('Email verified successfully! Redirecting to login...')
+
+            // Short delay to let the toast be seen and ensure state updates clear
+            setTimeout(() => {
+                navigate('/login', { replace: true })
+            }, 1500)
         } catch (err) {
-            console.error(err)
-            toast.error(err.response?.data || 'Verification failed. Please try again.')
+            console.error('Verification error:', err)
+            // Ensure we extract the error message correctly even if response is weird
+            const errorMsg = err.response?.data?.message || err.response?.data || err.message || 'Verification failed.'
+            const finalMsg = typeof errorMsg === 'string' ? errorMsg : 'Verification failed.'
+            toast.error(finalMsg)
         } finally {
             setLoading(false)
         }
