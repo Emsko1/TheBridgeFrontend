@@ -57,9 +57,22 @@ export default function VerifyEmail() {
             await authAPI.resendVerification(email)
             toast.success('Verification code resent! Check your inbox.')
         } catch (err) {
-            console.error(err)
-            const errorMsg = err.response?.data?.message || err.response?.data || 'Failed to resend code.'
-            toast.error(typeof errorMsg === 'string' ? errorMsg : 'Failed to resend code.')
+            console.error('Resend error:', err)
+            let errorMessage = 'Failed to resend code.'
+
+            if (err.response) {
+                // Server responded with a status code
+                const data = err.response.data
+                const message = data?.message || data?.title || (typeof data === 'string' ? data : '')
+                errorMessage = `Error ${err.response.status}: ${message || 'Server error'}`
+            } else if (err.request) {
+                // Request made but no response
+                errorMessage = 'Network error: No response from server.'
+            } else {
+                errorMessage = err.message
+            }
+
+            toast.error(errorMessage)
         } finally {
             setResending(false)
         }
