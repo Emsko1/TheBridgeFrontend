@@ -7,6 +7,7 @@ export default function VerifyEmail() {
     const [code, setCode] = useState('')
     const [email, setEmail] = useState('')
     const [loading, setLoading] = useState(false)
+    const [resending, setResending] = useState(false)
     const navigate = useNavigate()
     const location = useLocation()
 
@@ -51,12 +52,16 @@ export default function VerifyEmail() {
             return
         }
 
+        setResending(true)
         try {
             await authAPI.resendVerification(email)
             toast.success('Verification code resent! Check your inbox.')
         } catch (err) {
             console.error(err)
-            toast.error('Failed to resend code. Please try again.')
+            const errorMsg = err.response?.data?.message || err.response?.data || 'Failed to resend code.'
+            toast.error(typeof errorMsg === 'string' ? errorMsg : 'Failed to resend code.')
+        } finally {
+            setResending(false)
         }
     }
 
@@ -102,17 +107,19 @@ export default function VerifyEmail() {
                     Didn't receive the code?
                 </p>
                 <button
+                    type="button"
                     onClick={handleResend}
+                    disabled={resending}
                     style={{
                         background: 'none',
                         border: 'none',
-                        color: 'var(--primary)',
+                        color: resending ? 'var(--text-muted)' : 'var(--primary)',
                         fontWeight: 'bold',
-                        cursor: 'pointer',
+                        cursor: resending ? 'default' : 'pointer',
                         textDecoration: 'underline'
                     }}
                 >
-                    Resend Code
+                    {resending ? 'Resending...' : 'Resend Code'}
                 </button>
             </div>
         </div>
