@@ -47,8 +47,8 @@ export default function Register() {
       console.log('📤 Sending registration payload:', payload)
       const response = await authAPI.register(payload)
       console.log('✅ Registration successful:', response.data)
-      toast.success('Registration successful! Please login.')
-      navigate('/login')
+      toast.success('Registration successful! Please check your email for the code.')
+      navigate('/verify-email', { state: { email } })
     } catch (err) {
       console.error('❌ Register error:', err)
       console.error('Error response:', err.response?.data)
@@ -62,7 +62,7 @@ export default function Register() {
       let message = 'Registration failed'
 
       if (err.code === 'ERR_NETWORK' || !err.response) {
-        const apiUrl = import.meta.env.VITE_API_URL || '/api'
+        const apiUrl = import.meta.env.VITE_API_URL || 'https://mica-multifocal-marcell.ngrok-free.dev'
         message = `🔌 Cannot reach backend at ${apiUrl}`
       } else if (err.response?.status === 409) {
         message = '📧 Email already registered. Please login or use a different email.'
