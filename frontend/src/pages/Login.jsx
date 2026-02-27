@@ -48,7 +48,26 @@ export default function Login() {
 
       {error && (
         <div style={{ background: '#FEF2F2', border: '1px solid #FCA5A5', color: '#B91C1C', padding: '12px', borderRadius: '8px', marginBottom: '24px', fontSize: '0.9rem' }}>
-          ❌ {error}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}>
+            <span>❌ {error}</span>
+            <button
+              type="button"
+              onClick={() => navigate('/forgot-password')}
+              style={{
+                background: '#B91C1C',
+                color: 'white',
+                border: 'none',
+                padding: '6px 12px',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                fontSize: '0.8rem',
+                fontWeight: 'bold',
+                whiteSpace: 'nowrap'
+              }}
+            >
+              Reset Password
+            </button>
+          </div>
         </div>
       )}
 
@@ -121,18 +140,6 @@ export default function Login() {
         </button>
       </form>
 
-      {error && (
-        <div style={{ marginTop: '16px', textAlign: 'center' }}>
-          <button
-            type="button"
-            onClick={() => navigate('/forgot-password')}
-            className="btn-outline"
-            style={{ width: '100%', borderColor: 'var(--primary)', color: 'var(--primary)' }}
-          >
-            Reset Password
-          </button>
-        </div>
-      )}
 
       <p style={{ marginTop: '24px', textAlign: 'center', fontSize: '0.9rem' }}>
         Don't have an account? <a href='/register' style={{ color: 'var(--primary)', fontWeight: 600 }}>Create Account</a>
