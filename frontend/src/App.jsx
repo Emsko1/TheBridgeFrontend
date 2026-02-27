@@ -3,8 +3,11 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
 import Home from './pages/Home'
 import Listings from './pages/Listings'
+import Buy from './pages/Buy'
+import CarListings from './pages/CarListings'
+import SparePartListings from './pages/SparePartListings'
 import ListingDetails from './pages/ListingDetails'
-import Sell from './pages/SellCar'
+import Sell from './pages/Sell'
 import Header from './components/Header'
 import Login from './pages/Login'
 import Register from './pages/Register'
@@ -26,6 +29,9 @@ export default function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/listings" element={<Listings />} />
+              <Route path="/buy" element={<Buy />} />
+              <Route path="/cars" element={<CarListings />} />
+              <Route path="/spare-parts" element={<SparePartListings />} />
               <Route path="/listing/:id" element={<ListingDetails />} />
               <Route path="/flash-sale" element={<FlashSale />} />
               <Route path="/sell" element={<Sell />} />

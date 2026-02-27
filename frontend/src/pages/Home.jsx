@@ -20,11 +20,11 @@ export default function Home() {
           <div style={{ display: 'flex', gap: '12px', flexDirection: 'row', flexWrap: 'wrap' }}>
             {isLoggedIn ? (
               <>
-                <Link className="btn" to="/listings" style={{ padding: '12px 24px', fontSize: 'clamp(14px, 3vw, 1.1rem)', flex: 'auto', minWidth: '150px' }}>
-                  Browse Cars
+                <Link className="btn" to="/buy" style={{ padding: '12px 24px', fontSize: 'clamp(14px, 3vw, 1.1rem)', flex: 'auto', minWidth: '150px' }}>
+                  Browse
                 </Link>
                 <Link className="btn-outline" to="/sell" style={{ padding: '12px 24px', fontSize: 'clamp(14px, 3vw, 1.1rem)', flex: 'auto', minWidth: '150px' }}>
-                  Sell a Car
+                  Sell
                 </Link>
               </>
             ) : (

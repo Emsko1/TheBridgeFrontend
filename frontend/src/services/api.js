@@ -1,8 +1,8 @@
 import axios from 'axios'
 
 // Configure the base URL for API calls
-// Priority: VITE_API_URL > Ngrok Tunnel (Always for now)
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://mica-multifocal-marcell.ngrok-free.dev'
+// Priority: VITE_API_URL > Local Backend
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5086'
 
 console.log('🔗 API Base URL:', API_BASE_URL)
 console.log('🌍 Environment:', import.meta.env.DEV ? 'Development' : 'Production')
@@ -58,11 +58,15 @@ export const authAPI = {
       return api.post('/api/auth/register', nameOrPayload)
     }
     console.log('📝 Register attempt:', { name: nameOrPayload, email })
-    return api.post('/api/auth/register', { Name: nameOrPayload, Email: email, PasswordHash: password })
+    return api.post('/api/auth/register', { name: nameOrPayload, email, passwordHash: password })
   },
   getProfile: () => api.get('/api/auth/me'),
   logout: () => api.post('/api/auth/logout'),
-  verifyEmail: (email, code) => api.post('/api/auth/verify-email', { email, code }),
+  verifyEmail: (email, code) => {
+    // Strip spaces from OTP code and send as 'otp' field
+    const cleanOtp = code.replace(/\s/g, '')
+    return api.post('/api/auth/verify-email', { email, otp: cleanOtp })
+  },
   resendVerification: (email) => api.post('/api/auth/resend-verification', { email })
 }
 
