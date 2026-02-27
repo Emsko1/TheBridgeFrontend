@@ -216,23 +216,6 @@ export default function ListingDetails() {
         {(car.location || car.Location) && <p><strong>Location:</strong> {car.location || car.Location}</p>}
       </div>
 
-      <aside className="card">
-        <div style={{ padding: '0 0 16px', borderBottom: '1px solid var(--border)', marginBottom: '16px' }}>
-          <span style={{ fontSize: '14px', color: 'var(--text-muted)', display: 'block' }}>Asking Price</span>
-          <div style={{ fontWeight: 800, fontSize: '32px', color: 'var(--primary)' }}>
-            ₦{((car.price || car.Price) || 0).toLocaleString()}
-          </div>
-        </div>
-
-        {/* Mocking Best Bid for UI demonstration if not present in car object */}
-        <div style={{ marginBottom: '24px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-            <span style={{ color: 'var(--text-muted)' }}>Best Offer / Bid</span>
-            <span style={{ fontWeight: 'bold' }}>₦{((car.HighestBid || (car.price * 0.9)) || 0).toLocaleString()}</span>
-          </div>
-        )}
-      </div>
-
       <aside className="card h-fit sticky top-4">
         <div className="text-3xl font-bold text-primary mb-4">
           {car.IsTender && bids.length > 0
