@@ -80,15 +80,15 @@ export const authAPI = {
       return api.post('/api/auth/register', nameOrPayload)
     }
     console.log('📝 Register attempt:', { name: nameOrPayload, email })
-    return api.post('/api/auth/register', { name: nameOrPayload, email, password })
-  },
-  verifyEmail: (email, otp) => {
-    console.log('🔐 Email verification attempt:', email)
-    return api.post('/api/auth/verify-email', { email, otp })
+    return api.post('/api/auth/register', { name: nameOrPayload, email, passwordHash: password })
   },
   getProfile: () => api.get('/api/auth/me'),
   logout: () => api.post('/api/auth/logout'),
-  verifyEmail: (email, code) => api.post('/api/auth/verify-email', { email, code }),
+  verifyEmail: (email, code) => {
+    // Strip spaces from OTP code and send as 'otp' field
+    const cleanOtp = code.replace(/\s/g, '')
+    return api.post('/api/auth/verify-email', { email, otp: cleanOtp })
+  },
   resendVerification: (email) => api.post('/api/auth/resend-verification', { email })
 }
 

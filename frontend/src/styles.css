@@ -2,36 +2,32 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
 
 :root {
-  /* Brand Colors - Professional Palette */
-  --primary: #0F172A; /* Deep Navy Blue */
-  --primary-dark: #020617; /* Darker Navy */
-  --primary-light: #1E293B; /* Lighter Navy */
+  /* Brand Colors - White, Blue & Gold Mix */
+  --primary: #1e3a8a; /* Deep Blue */
+  --primary-dark: #1e40af; /* Darker Blue */
+  --primary-light: #dbeafe; /* Light Blue */
 
-  --accent: #D4AF37; /* Gold for Luxury/Premium feel */
-  --accent-hover: #B5952F;
+  --accent: #d4af37; /* Gold */
+  --accent-hover: #c9a227; /* Darker Gold */
 
   --success: #10B981; /* Emerald Green */
   --danger: #EF4444; /* Red */
   --warning: #F59E0B; /* Amber */
   --offline: #94A3B8; /* Slate Grey for offline */
 
-  /* Neutral Colors */
-  --bg-body: #F4F7FA;
-  /* Light Grey/Blue Background */
-  --bg-surface: #FFFFFF;
-  /* White Card/Surface */
-  --text-main: #0B192C;
-  /* Dark Navy Text */
-  --text-muted: #64748B;
-  /* Slate Grey Text */
-  --border: #E2E8F0;
-  /* Subtle Border */
+  /* Neutral Colors - White & Light Blues */
+  --bg-body: #f8fafc; /* Very Light Blue-White Background */
+  /* Light Blue/White Background */
+  --bg-surface: #ffffff; /* White Card/Surface */
+  --text-main: #0f172a; /* Dark Navy Text */
+  --text-muted: #475569; /* Slate Grey Text */
+  --border: #cbd5e1; /* Light Blue Border */
 
   /* Shadows */
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
-  --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.03);
+  --shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.08), 0 2px 4px -1px rgba(15, 23, 42, 0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.1), 0 4px 6px -2px rgba(15, 23, 42, 0.05);
+  --shadow-hover: 0 20px 25px -5px rgba(15, 23, 42, 0.15), 0 10px 10px -5px rgba(15, 23, 42, 0.08);
 
   /* Radius */
   --radius-sm: 8px;
