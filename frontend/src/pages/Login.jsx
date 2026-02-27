@@ -66,7 +66,10 @@ export default function Login() {
         </div>
 
         <div style={{ marginBottom: '24px', position: 'relative' }}>
-          <label>Password</label>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <label style={{ marginBottom: 0 }}>Password</label>
+            <a href='/forgot-password' style={{ fontSize: '0.8rem', color: 'var(--primary)', textDecoration: 'none' }}>Forgot password?</a>
+          </div>
           <input
             required
             type={showPassword ? 'text' : 'password'}
@@ -117,6 +120,19 @@ export default function Login() {
           {loading ? 'Logging in...' : 'Login'}
         </button>
       </form>
+
+      {error && (
+        <div style={{ marginTop: '16px', textAlign: 'center' }}>
+          <button
+            type="button"
+            onClick={() => navigate('/forgot-password')}
+            className="btn-outline"
+            style={{ width: '100%', borderColor: 'var(--primary)', color: 'var(--primary)' }}
+          >
+            Reset Password
+          </button>
+        </div>
+      )}
 
       <p style={{ marginTop: '24px', textAlign: 'center', fontSize: '0.9rem' }}>
         Don't have an account? <a href='/register' style={{ color: 'var(--primary)', fontWeight: 600 }}>Create Account</a>

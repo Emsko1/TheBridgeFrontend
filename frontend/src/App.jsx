@@ -14,6 +14,7 @@ import Register from './pages/Register'
 import VerifyEmail from './pages/VerifyEmail'
 import Profile from './pages/Profile'
 import FlashSale from './pages/FlashSale'
+import ForgotPassword from './pages/ForgotPassword'
 
 
 import { Toaster } from 'react-hot-toast'
@@ -39,6 +40,7 @@ export default function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/verify-email" element={<VerifyEmail />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
             </Routes>
           </main>
         </div>

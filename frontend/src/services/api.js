@@ -89,7 +89,8 @@ export const authAPI = {
     const cleanOtp = code.replace(/\s/g, '')
     return api.post('/api/auth/verify-email', { email, otp: cleanOtp })
   },
-  resendVerification: (email) => api.post('/api/auth/resend-verification', { email })
+  resendVerification: (email) => api.post('/api/auth/resend-verification', { email }),
+  forgotPassword: (email) => api.post('/api/auth/forgot-password', { email })
 }
 
 // Payout API
