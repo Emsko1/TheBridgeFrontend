@@ -1,21 +1,46 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
-export default function SearchFilter() {
-    const [activeCity, setActiveCity] = useState('All')
-    const [activePrice, setActivePrice] = useState(null)
+export default function SearchFilter({
+    onCityChange,
+    onPriceChange,
+    initialCity = 'All',
+    initialPrice = null
+}) {
+    const [activeCity, setActiveCity] = useState(initialCity)
+    const [activePrice, setActivePrice] = useState(initialPrice)
 
     const cities = ['All', 'Lagos', 'Abuja', 'Ikeja', 'Amuwo-Odofin', 'Ibadan', 'Other']
     const prices = ['< 2 M', '2-3 M', '3-4 M', '> 4 M']
 
+    // Update internal state if props change (e.g., from URL)
+    useEffect(() => {
+        if (initialCity) setActiveCity(initialCity)
+    }, [initialCity])
+
+    useEffect(() => {
+        if (initialPrice) setActivePrice(initialPrice)
+    }, [initialPrice])
+
+    const handleCityClick = (city) => {
+        setActiveCity(city)
+        if (onCityChange) onCityChange(city)
+    }
+
+    const handlePriceClick = (price) => {
+        const newPrice = activePrice === price ? null : price
+        setActivePrice(newPrice)
+        if (onPriceChange) onPriceChange(newPrice)
+    }
+
     return (
-        <div style={{ marginTop: '60px', padding: '20px', overflowX: 'auto' }}>
+        <div style={{ marginTop: '40px', padding: '20px', overflowX: 'auto' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', marginBottom: '24px', flexWrap: 'wrap' }}>
                 <span style={{ fontWeight: 600, color: 'var(--text-main)', fontSize: 'clamp(14px, 3vw, 16px)', minWidth: 'fit-content' }}>Select your city:</span>
                 <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', justifyContent: 'center' }}>
                     {cities.map(city => (
                         <button
                             key={city}
-                            onClick={() => setActiveCity(city)}
+                            onClick={() => handleCityClick(city)}
                             style={{
                                 padding: '8px 16px',
                                 borderRadius: '8px',
@@ -39,7 +64,7 @@ export default function SearchFilter() {
                 {prices.map(price => (
                     <button
                         key={price}
-                        onClick={() => setActivePrice(price)}
+                        onClick={() => handlePriceClick(price)}
                         style={{
                             padding: '10px 20px',
                             borderRadius: '8px',
@@ -69,3 +94,4 @@ export default function SearchFilter() {
         </div>
     )
 }
+

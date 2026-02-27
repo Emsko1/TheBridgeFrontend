@@ -3,11 +3,17 @@ import { useParams } from 'react-router-dom'
 import mock from '../_mock/listings'
 import { listingsAPI } from '../services/api'
 import { useAuth } from '../context/AuthContext'
+import DeliveryCalculator from '../components/DeliveryCalculator'
+import { resolvePhotoUrl } from '../utils/urlHelper'
 
 export default function ListingDetails() {
+  const { id } = useParams()
+  const [car, setCar] = useState(null)
+  const [loading, setLoading] = useState(true)
   const [bids, setBids] = useState([])
   const { user } = useAuth() // Assuming useAuth is available
   const [timeLeft, setTimeLeft] = useState('')
+  const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0)
 
   useEffect(() => {
     const fetchListingAndBids = async () => {
@@ -18,9 +24,8 @@ export default function ListingDetails() {
         // Fetch bids if it's a tender
         if (response.data.IsTender) {
           try {
-            // Dynamic import to avoid circular dependency issues if any, or just standard import if api.js exports it
             const { bidsAPI } = await import('../services/api');
-            const bidsRes = await bidsAPI.getByListing(id);
+            const bidsRes = await bidsAPI.getForListing(id);
             setBids(bidsRes.data);
           } catch (e) {
             console.log("No bids or failed to fetch bids", e);
@@ -29,13 +34,7 @@ export default function ListingDetails() {
 
       } catch (err) {
         console.error('Failed to fetch listing:', err)
-        // Fallback to mock data
-        const mockCar = mock.find(c => c.id === id)
-        if (mockCar) {
-          setCar(mockCar)
-        } else {
-          setCar({ id, title: 'Item', price: 1000, description: 'No details', photo: 'https://picsum.photos/seed/placeholder/800/600' })
-        }
+        setCar(null)
       } finally {
         setLoading(false)
       }
@@ -101,7 +100,10 @@ export default function ListingDetails() {
     ? car.Photos
     : (car.photo ? [car.photo] : ['https://picsum.photos/seed/placeholder/800/600'])
 
-  const currentPhoto = photos[currentPhotoIndex] || photos[0]
+  // Resolve current photo URL
+  const rawPhoto = photos[currentPhotoIndex] || photos[0]
+  const currentPhoto = resolvePhotoUrl(rawPhoto)
+
   const hasMultiplePhotos = photos.length > 1
 
   const handlePrevPhoto = () => {
@@ -195,7 +197,7 @@ export default function ListingDetails() {
                 {photos.map((photo, idx) => (
                   <img
                     key={idx}
-                    src={photo}
+                    src={resolvePhotoUrl(photo)}
                     alt={`Thumbnail ${idx + 1}`}
                     onClick={() => setCurrentPhotoIndex(idx)}
                     className={`w-16 h-16 object-cover rounded cursor-pointer border-2 ${currentPhotoIndex === idx ? 'border-primary' : 'border-gray-200'}`}
@@ -283,6 +285,10 @@ export default function ListingDetails() {
 
         <div className="mt-4 text-xs text-center text-gray-500">
           {car.IsTender ? "Highest bidder wins at the Appointed Hour." : "Secure transaction via Paystack Escrow."}
+        </div>
+
+        <div className="mt-8 pt-6 border-t">
+          <DeliveryCalculator />
         </div>
       </aside>
     </div>

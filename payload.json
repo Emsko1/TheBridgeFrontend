@@ -1,0 +1,8 @@
+{
+    "name": "Test User",
+    "email": "testuser_debug_1@example.com",
+    "passwordHash": "password123",
+    "businessName": "",
+    "registrationNumber": "",
+    "documentUrls": []
+}

@@ -3,14 +3,37 @@ import axios from 'axios'
 // Configure the base URL for API calls
 // In Dev, default to '' to use Vite Proxy. In Prod, default to localhost:5086 if env var is missing.
 // Hardcoded for debugging to ensure we hit local backend
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5086'
+// Dynamic configuration:
+// 1. If running locally (localhost), use the Vite Proxy ('') to avoid CORS and ensure connection.
+// 2. If running on mobile/network (e.g., accessing via Ngrok), use the configured VITE_API_URL.
+let API_BASE_URL = ''
 
-console.log('🔗 API Base URL:', API_BASE_URL)
+if (typeof window !== 'undefined') {
+  const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  if (isLocal) {
+    API_BASE_URL = '' // Use Vite proxy
+  } else {
+    // Mobile / External access
+    API_BASE_URL = import.meta.env.VITE_API_URL || 'https://mica-multifocal-marcell.ngrok-free.dev'
+  }
+} else {
+  // Fallback for non-browser environments if any
+  API_BASE_URL = import.meta.env.VITE_API_URL || ''
+}
+
+// FORCE OVERRIDE for debugging if needed:
+// API_BASE_URL = '' 
+
+console.log('🔗 Configured API URL:', API_BASE_URL || '(Relative/Proxy)')
+
+console.log('🔗 API Base URL:', API_BASE_URL ? API_BASE_URL : '(Local Proxy)')
+console.log('🌍 Environment:', import.meta.env.DEV ? 'Development' : 'Production')
 
 const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    'ngrok-skip-browser-warning': 'true' // Bypass Ngrok warning page
   },
   withCredentials: true // Enable credentials for CORS
 })
@@ -64,7 +87,9 @@ export const authAPI = {
     return api.post('/api/auth/verify-email', { email, otp })
   },
   getProfile: () => api.get('/api/auth/me'),
-  logout: () => api.post('/api/auth/logout')
+  logout: () => api.post('/api/auth/logout'),
+  verifyEmail: (email, code) => api.post('/api/auth/verify-email', { email, code }),
+  resendVerification: (email) => api.post('/api/auth/resend-verification', { email })
 }
 
 // Payout API
@@ -94,5 +119,3 @@ export const deliveriesAPI = {
 }
 
 export default api
-
-

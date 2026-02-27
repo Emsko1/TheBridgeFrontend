@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import CarCard from '../components/CarCard'
+import SearchFilter from '../components/SearchFilter'
 import { listingsAPI } from '../services/api'
 import { initializeSignalR, onListingCreated, onListingUpdated, onListingDeleted, disconnectSignalR } from '../services/signalr'
 import { useAuth } from '../context/AuthContext'
@@ -10,8 +11,10 @@ export default function Listings() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [connected, setConnected] = useState(false)
-  const [searchParams] = useSearchParams()
-  const [filterType, setFilterType] = useState(searchParams.get('type') === 'auction' ? 'auction' : 'marketplace') // 'marketplace', 'local', 'external', 'auction'
+  const [searchParams, setSearchParams] = useSearchParams()
+  const [filterType, setFilterType] = useState(searchParams.get('type') === 'auction' ? 'auction' : 'marketplace')
+  const [activeCity, setActiveCity] = useState(searchParams.get('city') || 'All')
+  const [activePrice, setActivePrice] = useState(null)
   const { user } = useAuth()
 
   useEffect(() => {
@@ -40,33 +43,24 @@ export default function Listings() {
 
         // Call appropriate API based on filter
         if (filterType === 'marketplace') {
-          // Get combined marketplace listings (local + external)
           const localRes = await listingsAPI.getAll()
           const externalRes = await listingsAPI.getExternal()
           response = {
             data: [...(localRes.data || []), ...(externalRes.data || [])]
           }
-          console.log('📊 Marketplace listings:', response.data.length)
         } else if (filterType === 'external') {
-          // Get premium/external listings
           response = await listingsAPI.getExternal()
-          console.log('⭐ Premium listings:', response.data?.length)
         } else if (filterType === 'local') {
-          // Get user's local listings
           response = await listingsAPI.getAll()
-          console.log('🏠 Local listings:', response.data?.length)
         } else if (filterType === 'auction') {
-          // Get all and filter for tenders/auctions
           const localRes = await listingsAPI.getAll()
           const externalRes = await listingsAPI.getExternal()
           const allListings = [...(localRes.data || []), ...(externalRes.data || [])]
           response = {
             data: allListings.filter(item => item.IsTender || item.isTender)
           }
-          console.log('🔴 Auction listings:', response.data.length)
         }
 
-        // Normalize the data - ensure images are properly mapped
         const normalizedData = (Array.isArray(response.data) ? response.data : []).map(item => ({
           id: item.id || item.Id,
           sellerId: item.sellerId || item.SellerId,
@@ -77,7 +71,6 @@ export default function Listings() {
           description: item.description || item.Description,
           type: item.type || item.Type,
           photos: Array.isArray(item.photos || item.Photos) ? (item.photos || item.Photos) : [],
-          // Primary image for card display
           imageUrl: ((item.photos || item.Photos)?.[0]) ||
             (item.photo) ||
             'https://images.unsplash.com/photo-1552519507-da3a142c6e3d?w=800&h=600&fit=crop',
@@ -87,14 +80,11 @@ export default function Listings() {
           minimumBid: item.MinimumBid || item.minimumBid
         }))
 
-        // Filter local listings by user ID if filterType is 'local'
         const finalItems = filterType === 'local' && user
           ? normalizedData.filter(item => item.sellerId === user.id || item.sellerId === user.Id)
           : normalizedData
 
-        console.log('✅ Normalized listings:', finalItems)
         setItems(finalItems)
-        setError(null)
       } catch (err) {
         console.error('❌ Failed to fetch listings:', err)
         setError(err.message || 'Failed to fetch listings')
@@ -106,9 +96,7 @@ export default function Listings() {
 
     fetchListings()
 
-    // Setup real-time listeners
     onListingCreated((newListing) => {
-      console.log('🆕 New listing created:', newListing)
       setItems(prev => {
         const exists = prev.some(item => item.id === (newListing.id || newListing.Id))
         return exists ? prev : [newListing, ...prev]
@@ -116,22 +104,51 @@ export default function Listings() {
     })
 
     onListingUpdated((updatedListing) => {
-      console.log('✏️ Listing updated:', updatedListing)
       setItems(prev => prev.map(item =>
         item.id === (updatedListing.id || updatedListing.Id) ? updatedListing : item
       ))
     })
 
     onListingDeleted((deletedId) => {
-      console.log('🗑️ Listing deleted:', deletedId)
       setItems(prev => prev.filter(item => item.id !== deletedId))
     })
 
-    // Cleanup on unmount
     return () => {
       disconnectSignalR()
     }
   }, [filterType])
+
+  const filterItems = (items) => {
+    return items.filter(item => {
+      // City Filter
+      const matchesCity = activeCity === 'All' ||
+        (item.location && item.location.toLowerCase().includes(activeCity.toLowerCase()));
+
+      // Price Filter
+      let matchesPrice = true;
+      if (activePrice) {
+        const price = parseFloat(item.price);
+        if (activePrice === '< 2 M') matchesPrice = price < 2000000;
+        else if (activePrice === '2-3 M') matchesPrice = price >= 2000000 && price <= 3000000;
+        else if (activePrice === '3-4 M') matchesPrice = price >= 3000000 && price <= 4000000;
+        else if (activePrice === '> 4 M') matchesPrice = price > 4000000;
+      }
+
+      return matchesCity && matchesPrice;
+    });
+  };
+
+  const filteredItems = filterItems(items);
+
+  const handleCityChange = (city) => {
+    setActiveCity(city);
+    if (city === 'All') {
+      searchParams.delete('city');
+    } else {
+      searchParams.set('city', city);
+    }
+    setSearchParams(searchParams);
+  };
 
   if (loading) return <div style={{ padding: '20px' }}><h2>Loading listings...</h2></div>
 
@@ -216,11 +233,18 @@ export default function Listings() {
         </button>
       </div>
 
+      <SearchFilter
+        onCityChange={handleCityChange}
+        onPriceChange={setActivePrice}
+        initialCity={activeCity}
+        initialPrice={activePrice}
+      />
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {items.length === 0 ? (
-          <p>No listings available. {filterType === 'local' ? 'Be the first to list a car!' : 'Try a different filter'}</p>
+        {filteredItems.length === 0 ? (
+          <p>No listings available. Try a different filter.</p>
         ) : (
-          items.map(item => (
+          filteredItems.map(item => (
             <CarCard key={item.id} car={item} />
           ))
         )}
@@ -236,3 +260,4 @@ export default function Listings() {
     </div>
   )
 }
+

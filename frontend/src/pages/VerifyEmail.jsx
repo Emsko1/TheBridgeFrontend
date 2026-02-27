@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { authAPI } from '../services/api'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-hot-toast'
 
 export default function VerifyEmail() {
     const [otp, setOtp] = useState('')
@@ -29,18 +30,14 @@ export default function VerifyEmail() {
             const response = await authAPI.verifyEmail(email, otp)
             console.log('Verification successful:', response.data)
 
-            // Store token if returned on verification
-            if (response.data.token) {
-                localStorage.setItem('bridge_token', response.data.token)
-                // Also store user info if needed
-                if (response.data.user) {
-                    localStorage.setItem('bridge_user', JSON.stringify(response.data.user))
-                }
-            }
-
-            alert('✅ Email verified successfully! You can now access your account.')
+            // Do not auto-login. Force user to login manually.
+            toast.success('✅ Email verified successfully! Redirecting to login...')
             localStorage.removeItem('pending_verification_email')
-            navigate('/profile')
+
+            // Short delay to let the toast be seen
+            setTimeout(() => {
+                navigate('/login')
+            }, 2000)
         } catch (err) {
             console.error('Verification error:', err)
             setError(err.response?.data?.message || 'Verification failed. Invalid code.')
@@ -50,8 +47,33 @@ export default function VerifyEmail() {
     }
 
     const handleResend = async () => {
-        // Implement resend logic if backend supports it
-        alert("Please request a new registration if code expired.")
+        if (!email) {
+            toast.error("No email address found. Please register again.")
+            return
+        }
+
+        const loadingToast = toast.loading('Resending code...')
+        try {
+            await authAPI.resendVerification(email)
+            toast.dismiss(loadingToast)
+            toast.success('✅ Verification code resent! Check your email.')
+        } catch (err) {
+            toast.dismiss(loadingToast)
+            console.error('Resend error:', err)
+
+            let msg = 'Failed to resend code.'
+            if (err.response) {
+                const data = err.response.data
+                msg = data?.message || data?.Message || data?.title || msg
+                if (err.response.status === 404) msg = 'Endpoint not found (404)'
+                if (err.response.status === 401) msg = 'Unauthorized (401)'
+                if (err.response.status === 500) msg = 'Server Error (500)'
+            } else if (err.request) {
+                msg = 'Network Error - Backend unreachable'
+            }
+
+            toast.error(msg)
+        }
     }
 
     return (

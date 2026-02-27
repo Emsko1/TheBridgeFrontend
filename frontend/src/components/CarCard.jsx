@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { getThumbnail } from '../services/photoUtils'
+import { resolvePhotoUrl } from '../utils/urlHelper'
 
 export default function CarCard({ car }) {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0)
@@ -10,7 +11,8 @@ export default function CarCard({ car }) {
     ? car.Photos
     : (car.photo ? [car.photo] : ['https://picsum.photos/seed/placeholder/800/600'])
 
-  const currentPhoto = photos[currentPhotoIndex] || getThumbnail(photos)
+  const rawPhoto = photos[currentPhotoIndex] || getThumbnail(photos)
+  const currentPhoto = resolvePhotoUrl(rawPhoto)
   const hasMultiplePhotos = photos.length > 1
 
   const handlePrevPhoto = (e) => {

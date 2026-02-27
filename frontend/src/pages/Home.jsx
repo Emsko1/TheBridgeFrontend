@@ -80,7 +80,10 @@ export default function Home() {
       </div>
 
       <WhyChooseUs />
-      <SearchFilter />
+      <SearchFilter onCityChange={(city) => {
+        const path = city === 'All' ? '/listings' : `/listings?city=${city}`;
+        window.location.href = path;
+      }} />
 
       <a
         href="https://wa.me/2341234567890"
