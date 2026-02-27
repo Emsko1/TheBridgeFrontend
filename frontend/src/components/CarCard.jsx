@@ -7,9 +7,10 @@ import { formatPriceReadable } from '../utils/formatUtils'
 export default function CarCard({ car }) {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0)
 
-  // Handle both single photo (car.photo) and multiple photos (car.Photos array)
-  const photos = car.Photos && Array.isArray(car.Photos) && car.Photos.length > 0
-    ? car.Photos
+  // Handle both single photo and multiple photos
+  const carPhotos = car.Photos || car.photos || []
+  const photos = Array.isArray(carPhotos) && carPhotos.length > 0
+    ? carPhotos
     : (car.photo ? [car.photo] : ['https://picsum.photos/seed/placeholder/800/600'])
 
   const rawPhoto = photos[currentPhotoIndex] || getThumbnail(photos)

@@ -43,10 +43,11 @@ export default function AuctionCard({ listing }) {
 
     // Helper to get image
     const getImage = () => {
-        if (listing.Photos && listing.Photos.length > 0) return listing.Photos[0];
+        const photos = listing.Photos || listing.photos;
+        if (photos && Array.isArray(photos) && photos.length > 0) return photos[0];
         if (listing.photo) return listing.photo;
         if (listing.imageUrl) return listing.imageUrl;
-        return 'https://via.placeholder.com/300x200?text=No+Image';
+        return 'https://picsum.photos/seed/placeholder/800/600';
     };
 
     return (

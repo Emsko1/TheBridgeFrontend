@@ -4,6 +4,7 @@ import mock from '../_mock/listings'
 import { listingsAPI } from '../services/api'
 import { useAuth } from '../context/AuthContext'
 import DeliveryCalculator from '../components/DeliveryCalculator'
+import { resolvePhotoUrl } from '../utils/urlHelper'
 
 export default function ListingDetails() {
   const { id } = useParams()
@@ -95,8 +96,9 @@ export default function ListingDetails() {
   if (!car) return <div className="p-4">Listing not found</div>
 
   // Handle both single photo and multiple photos
-  const photos = (car.Photos && Array.isArray(car.Photos) && car.Photos.length > 0)
-    ? car.Photos
+  const carPhotos = car.Photos || car.photos || []
+  const photos = Array.isArray(carPhotos) && carPhotos.length > 0
+    ? carPhotos
     : (car.photo ? [car.photo] : ['https://picsum.photos/seed/placeholder/800/600'])
 
   // Resolve current photo URL
