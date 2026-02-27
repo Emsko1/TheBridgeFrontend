@@ -4,7 +4,6 @@ import mock from '../_mock/listings'
 import { listingsAPI } from '../services/api'
 import { useAuth } from '../context/AuthContext'
 import DeliveryCalculator from '../components/DeliveryCalculator'
-import { resolvePhotoUrl } from '../utils/urlHelper'
 
 export default function ListingDetails() {
   const { id } = useParams()
@@ -208,31 +207,28 @@ export default function ListingDetails() {
           )}
         </div>
 
-        <h1 className="text-2xl font-bold mb-2">{car.title || car.Title}</h1>
-        <p className="text-gray-600 mb-4">{car.description || car.Description}</p>
+        <h2>
+          {car.title || car.Title}
 
-        <div className="grid grid-cols-2 gap-4 mb-4">
-          {(car.year || car.Year) && <div><strong>Year:</strong> {car.year || car.Year}</div>}
-          {(car.location || car.Location) && <div><strong>Location:</strong> {car.location || car.Location}</div>}
+        </h2>
+        <p>{car.description || car.Description}</p>
+        {(car.year || car.Year) && <p><strong>Year:</strong> {car.year || car.Year}</p>}
+        {(car.location || car.Location) && <p><strong>Location:</strong> {car.location || car.Location}</p>}
+      </div>
+
+      <aside className="card">
+        <div style={{ padding: '0 0 16px', borderBottom: '1px solid var(--border)', marginBottom: '16px' }}>
+          <span style={{ fontSize: '14px', color: 'var(--text-muted)', display: 'block' }}>Asking Price</span>
+          <div style={{ fontWeight: 800, fontSize: '32px', color: 'var(--primary)' }}>
+            ₦{((car.price || car.Price) || 0).toLocaleString()}
+          </div>
         </div>
 
-        {/* Bid History Section */}
-        {car.IsTender && (
-          <div className="mt-8 border-t pt-4">
-            <h3 className="text-xl font-bold mb-4">Bid History</h3>
-            {bids.length === 0 ? (
-              <p className="text-gray-500">No bids yet. Be the first!</p>
-            ) : (
-              <div className="space-y-2">
-                {bids.map((bid, idx) => (
-                  <div key={idx} className="flex justify-between items-center p-3 bg-gray-50 rounded">
-                    <span>{idx === 0 ? '👑 Highest Bidder' : 'Bidder'}</span>
-                    <span className="font-bold">₦{bid.amount?.toLocaleString()}</span>
-                    <span className="text-xs text-gray-500">{new Date(bid.timestamp).toLocaleTimeString()}</span>
-                  </div>
-                ))}
-              </div>
-            )}
+        {/* Mocking Best Bid for UI demonstration if not present in car object */}
+        <div style={{ marginBottom: '24px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+            <span style={{ color: 'var(--text-muted)' }}>Best Offer / Bid</span>
+            <span style={{ fontWeight: 'bold' }}>₦{((car.HighestBid || (car.price * 0.9)) || 0).toLocaleString()}</span>
           </div>
         )}
       </div>

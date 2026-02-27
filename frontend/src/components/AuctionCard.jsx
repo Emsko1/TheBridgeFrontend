@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { resolvePhotoUrl } from '../utils/urlHelper';
+import { formatPriceReadable } from '../utils/formatUtils';
 
 export default function AuctionCard({ listing }) {
     const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
@@ -80,7 +81,7 @@ export default function AuctionCard({ listing }) {
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
                     <span style={{ color: 'var(--text-muted)' }}>Current Bid</span>
                     <span style={{ color: 'var(--primary)', fontWeight: 'bold', fontSize: '20px' }}>
-                        ₦{currentBid.toLocaleString()}
+                        {formatPriceReadable(currentBid)}
                     </span>
                 </div>
 

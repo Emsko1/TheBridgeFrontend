@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
+import { formatCurrency } from '../utils/formatUtils';
 
 const LOCATIONS = [
     { name: 'Lagos (Island)', basePrice: 15000, days: '1-2' },
@@ -54,7 +55,7 @@ export default function DeliveryCalculator() {
                     <div style={{ background: '#F0FDF4', border: '1px solid #BBF7D0', padding: '12px', borderRadius: '8px' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
                             <span style={{ color: '#166534' }}>Estimated Cost:</span>
-                            <span style={{ fontWeight: 'bold', color: '#166534' }}>₦{estimate.basePrice.toLocaleString()}</span>
+                            <span style={{ fontWeight: 'bold', color: '#166534' }}>{formatCurrency(estimate.basePrice)}</span>
                         </div>
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <span style={{ color: '#166534' }}>Delivery Time:</span>

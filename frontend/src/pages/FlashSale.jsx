@@ -39,7 +39,7 @@ export default function FlashSale() {
                 <p style={{ fontSize: '20px', maxWidth: '600px', margin: '0 auto', opacity: 0.9 }}>
                     Exclusive deals. Live bidding. Greatest value.
                     <br />
-                    Join the tensiometer of trading.
+                    Join the tensiometer of Autos trading.
                 </p>
             </div>
 

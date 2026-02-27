@@ -47,8 +47,8 @@ export default function Register() {
       console.log('📤 Sending registration payload:', payload)
       const response = await authAPI.register(payload)
       console.log('✅ Registration successful:', response.data)
-      toast.success('Registration successful! Please login.')
-      navigate('/login')
+      toast.success('Registration successful! Please check your email for the code.')
+      navigate('/verify-email', { state: { email } })
     } catch (err) {
       console.error('❌ Register error:', err)
       console.error('Error response:', err.response?.data)
