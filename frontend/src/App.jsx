@@ -15,6 +15,7 @@ import VerifyEmail from './pages/VerifyEmail'
 import Profile from './pages/Profile'
 import FlashSale from './pages/FlashSale'
 import ForgotPassword from './pages/ForgotPassword'
+import ResetPassword from './pages/ResetPassword'
 
 
 import { Toaster } from 'react-hot-toast'
@@ -41,6 +42,7 @@ export default function App() {
               <Route path="/register" element={<Register />} />
               <Route path="/verify-email" element={<VerifyEmail />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
             </Routes>
           </main>
         </div>
